@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Yes: React.FC = () => {
+const PageFour: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const navigate = useNavigate();
 
@@ -21,26 +21,24 @@ const Yes: React.FC = () => {
 
     return (
         <div className="flex h-screen flex-col items-center justify-center">
-            <img src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" />
-            <div className="my-4 text-4xl font-bold">
-                First 69 Kisses for the Eumel !!!
-            </div>
+            <div className="my-4 text-4xl font-bold">Page Four</div>
+            <p className="my-2 text-lg">Loading content...</p>
             <div className="w-3/4 h-4 bg-gray-300 rounded-full overflow-hidden my-4">
                 <div
-                    className="h-full bg-green-500"
+                    className="h-full bg-blue-500"
                     style={{ width: `${progress}%` }}
                 />
             </div>
             {progress === 100 && (
                 <button
-                    onClick={() => navigate("/events")}
-                    className="mt-4 rounded px-4 py-2 text-black bg-gradient-to-b from-pink-200 to-pink-100"
+                    onClick={() => navigate("/page-five")}
+                    className="mt-4 rounded px-4 py-2 bg-blue-500 text-white hover:bg-blue-700"
                 >
-                    Now we can continue
+                    Continue
                 </button>
             )}
         </div>
     );
 };
 
-export default Yes;
+export default PageFour;
