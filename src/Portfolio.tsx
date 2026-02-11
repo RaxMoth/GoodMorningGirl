@@ -16,7 +16,7 @@ const itemsData = [
     },
 ];
 
-const PageFive: React.FC = () => {
+const Portfolio: React.FC = () => {
     const [currentItem, setCurrentItem] = useState(0);
     const navigate = useNavigate();
 
@@ -74,4 +74,4 @@ const PageFive: React.FC = () => {
     );
 };
 
-export default PageFive;
+export default Portfolio;

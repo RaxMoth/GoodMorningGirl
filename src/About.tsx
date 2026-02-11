@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const PageTwo: React.FC = () => {
+const About: React.FC = () => {
     const navigate = useNavigate();
     return (
         <div className="min-h-screen py-16 px-4 bg-gradient-to-b from-white to-gray-50">
@@ -20,7 +20,7 @@ const PageTwo: React.FC = () => {
                         Back
                     </button>
                     <button
-                        onClick={() => navigate("/page-three")}
+                        onClick={() => navigate("/services")}
                         className="rounded px-6 py-2 bg-blue-500 text-white hover:bg-blue-700 transition"
                     >
                         Next
@@ -31,4 +31,4 @@ const PageTwo: React.FC = () => {
     );
 };
 
-export default PageTwo;
+export default About;

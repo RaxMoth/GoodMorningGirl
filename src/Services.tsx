@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const PageThree: React.FC = () => {
+const Services: React.FC = () => {
     const navigate = useNavigate();
     return (
         <div className="min-h-screen py-16 px-4 bg-gradient-to-b from-white to-gray-50">
@@ -37,13 +37,13 @@ const PageThree: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-4 mt-8">
                     <button
-                        onClick={() => navigate("/page-two")}
+                        onClick={() => navigate("/about")}
                         className="rounded px-6 py-2 bg-gray-500 text-white hover:bg-gray-700 transition"
                     >
                         Back
                     </button>
                     <button
-                        onClick={() => navigate("/page-four")}
+                        onClick={() => navigate("/features")}
                         className="rounded px-6 py-2 bg-blue-500 text-white hover:bg-blue-700 transition"
                     >
                         Next
@@ -54,4 +54,4 @@ const PageThree: React.FC = () => {
     );
 };
 
-export default PageThree;
+export default Services;
