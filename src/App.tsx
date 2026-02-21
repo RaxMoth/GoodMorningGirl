@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import LandingPage from "./LandingPage";
-import About from "./About";
-import Services from "./Services";
-import Features from "./Features";
-import Portfolio from "./Portfolio";
+import LandingPage from "./pages/LandingPage";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Features from "./pages/Features";
+import Portfolio from "./pages/Portfolio";
 import FeatureComponent from "./components/FeatureComponent";
 
 const App: React.FC = () => {
