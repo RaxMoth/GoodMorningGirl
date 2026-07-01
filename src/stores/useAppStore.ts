@@ -1,32 +1,40 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AppState {
-    // State
-    count: number;
-    theme: "light" | "dark";
-    isLoading: boolean;
+    /** Desktop sidebar collapsed to icon rail. */
+    sidebarCollapsed: boolean;
+    /** Mobile off-canvas sidebar open. */
+    mobileNavOpen: boolean;
+    /** Command palette (⌘K) open. */
+    commandOpen: boolean;
 
-    // Actions
-    increment: () => void;
-    decrement: () => void;
-    resetCount: () => void;
-    toggleTheme: () => void;
-    setLoading: (loading: boolean) => void;
+    toggleSidebar: () => void;
+    setSidebarCollapsed: (v: boolean) => void;
+    setMobileNavOpen: (v: boolean) => void;
+    setCommandOpen: (v: boolean) => void;
 }
 
-export const useAppStore = create<AppState>((set) => ({
-    // Initial state
-    count: 0,
-    theme: "light",
-    isLoading: false,
+/**
+ * App-wide UI state (layout chrome). Only `sidebarCollapsed` is persisted;
+ * transient flags like open menus reset on reload.
+ */
+export const useAppStore = create<AppState>()(
+    persist(
+        (set) => ({
+            sidebarCollapsed: false,
+            mobileNavOpen: false,
+            commandOpen: false,
 
-    // Actions
-    increment: () => set((state) => ({ count: state.count + 1 })),
-    decrement: () => set((state) => ({ count: state.count - 1 })),
-    resetCount: () => set({ count: 0 }),
-    toggleTheme: () =>
-        set((state) => ({
-            theme: state.theme === "light" ? "dark" : "light",
-        })),
-    setLoading: (loading) => set({ isLoading: loading }),
-}));
+            toggleSidebar: () =>
+                set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+            setSidebarCollapsed: (v) => set({ sidebarCollapsed: v }),
+            setMobileNavOpen: (v) => set({ mobileNavOpen: v }),
+            setCommandOpen: (v) => set({ commandOpen: v }),
+        }),
+        {
+            name: "app-ui",
+            partialize: (s) => ({ sidebarCollapsed: s.sidebarCollapsed }),
+        },
+    ),
+);
