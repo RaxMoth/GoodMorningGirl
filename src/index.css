@@ -1,3 +1,135 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Design tokens
+ * -------------
+ * All colors are HSL channel triplets (e.g. `222 47% 11%`) so Tailwind can
+ * apply opacity modifiers like `bg-primary/50`. Change these variables to
+ * re-brand the entire app — every component reads from them.
+ */
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 222 47% 11%;
+
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+
+        --primary: 221 83% 53%;
+        --primary-foreground: 210 40% 98%;
+
+        --secondary: 210 40% 96%;
+        --secondary-foreground: 222 47% 11%;
+
+        --muted: 210 40% 96%;
+        --muted-foreground: 215 16% 47%;
+
+        --accent: 210 40% 96%;
+        --accent-foreground: 222 47% 11%;
+
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 210 40% 98%;
+
+        --success: 142 71% 45%;
+        --success-foreground: 210 40% 98%;
+
+        --warning: 38 92% 50%;
+        --warning-foreground: 222 47% 11%;
+
+        --border: 214 32% 91%;
+        --input: 214 32% 91%;
+        --ring: 221 83% 53%;
+
+        --chart-1: 221 83% 53%;
+        --chart-2: 142 71% 45%;
+        --chart-3: 38 92% 50%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+
+        --radius: 0.6rem;
+    }
+
+    .dark {
+        --background: 222 47% 8%;
+        --foreground: 210 40% 98%;
+
+        --card: 222 47% 11%;
+        --card-foreground: 210 40% 98%;
+
+        --popover: 222 47% 11%;
+        --popover-foreground: 210 40% 98%;
+
+        --primary: 217 91% 60%;
+        --primary-foreground: 222 47% 11%;
+
+        --secondary: 217 33% 18%;
+        --secondary-foreground: 210 40% 98%;
+
+        --muted: 217 33% 18%;
+        --muted-foreground: 215 20% 65%;
+
+        --accent: 217 33% 18%;
+        --accent-foreground: 210 40% 98%;
+
+        --destructive: 0 63% 51%;
+        --destructive-foreground: 210 40% 98%;
+
+        --success: 142 71% 45%;
+        --success-foreground: 210 40% 98%;
+
+        --warning: 38 92% 50%;
+        --warning-foreground: 222 47% 11%;
+
+        --border: 217 33% 20%;
+        --input: 217 33% 22%;
+        --ring: 217 91% 60%;
+
+        --chart-1: 217 91% 60%;
+        --chart-2: 142 71% 45%;
+        --chart-3: 38 92% 50%;
+        --chart-4: 280 65% 65%;
+        --chart-5: 340 75% 60%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+
+    :root {
+        color-scheme: light;
+    }
+    .dark {
+        color-scheme: dark;
+    }
+}
+
+@layer utilities {
+    /* Subtle custom scrollbar that respects the theme */
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: hsl(var(--muted-foreground) / 0.3);
+        border-radius: 9999px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}

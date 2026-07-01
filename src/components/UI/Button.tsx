@@ -1,55 +1,93 @@
-import React from "react";
-import { ButtonProps } from "../../types";
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
+import { cn } from "../../lib/utils";
+
+export const buttonVariants = cva(
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
+    {
+        variants: {
+            variant: {
+                primary:
+                    "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+                secondary:
+                    "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                destructive:
+                    "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
+                outline:
+                    "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+                ghost: "hover:bg-accent hover:text-accent-foreground",
+                link: "text-primary underline-offset-4 hover:underline",
+            },
+            size: {
+                sm: "h-8 px-3 text-xs",
+                md: "h-10 px-4 py-2",
+                lg: "h-11 px-8 text-base",
+                icon: "h-10 w-10",
+            },
+        },
+        defaultVariants: {
+            variant: "primary",
+            size: "md",
+        },
+    },
+);
+
+export interface ButtonProps
+    extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+        VariantProps<typeof buttonVariants> {
+    /** Render as a child element (e.g. wrap an <a> or <Link>). */
+    asChild?: boolean;
+    /** Show a spinner and disable the button. */
+    isLoading?: boolean;
+}
 
 /**
- * Reusable Button Component
- * Supports multiple variants and sizes
+ * The primary interactive element. Variants and sizes are driven by `cva`.
+ *
+ * Use `asChild` to compose with routing links:
+ * `<Button asChild><Link to="/x">Go</Link></Button>`
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     (
         {
-            variant = "primary",
-            size = "md",
-            disabled = false,
-            onClick,
+            className,
+            variant,
+            size,
+            asChild = false,
+            isLoading = false,
+            disabled,
             children,
+            ...props
         },
         ref,
     ) => {
-        const baseClasses =
-            "font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+        const classes = cn(buttonVariants({ variant, size }), className);
 
-        const variantClasses = {
-            primary:
-                "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
-            secondary:
-                "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500",
-            outline:
-                "border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500",
-            ghost: "text-blue-600 hover:bg-blue-50 focus:ring-blue-500",
-        };
-
-        const sizeClasses = {
-            sm: "px-3 py-1.5 text-sm",
-            md: "px-4 py-2 text-base",
-            lg: "px-6 py-3 text-lg",
-        };
-
-        const className = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`;
+        // Lightweight `asChild` without pulling in @radix-ui/react-slot:
+        // clone the single child and merge the computed classes.
+        if (asChild && React.isValidElement(children)) {
+            return React.cloneElement(children as React.ReactElement, {
+                className: cn(
+                    classes,
+                    (children as React.ReactElement).props.className,
+                ),
+            });
+        }
 
         return (
             <button
                 ref={ref}
-                className={className}
-                disabled={disabled}
-                onClick={onClick}
+                className={classes}
+                disabled={disabled || isLoading}
+                {...props}
             >
+                {isLoading && <Loader2 className="animate-spin" />}
                 {children}
             </button>
         );
     },
 );
-
 Button.displayName = "Button";
 
-export default Button;
+export { Button };

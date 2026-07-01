@@ -1,70 +1,61 @@
-import React from "react";
-import { AlertCircle, CheckCircle, AlertTriangle, Info } from "lucide-react";
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../../lib/utils";
 
-interface AlertProps {
-    type?: "success" | "error" | "warning" | "info";
-    title?: string;
-    message: string;
-    onClose?: () => void;
-}
-
-/**
- * Alert Component with icon support
- */
-const Alert: React.FC<AlertProps> = ({
-    type = "info",
-    title,
-    message,
-    onClose,
-}) => {
-    const config = {
-        success: {
-            bg: "bg-green-50",
-            border: "border-green-200",
-            text: "text-green-800",
-            icon: CheckCircle,
+const alertVariants = cva(
+    "relative w-full rounded-lg border p-4 [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:size-5 [&>svg~*]:pl-8 [&>svg+div]:translate-y-[-1px]",
+    {
+        variants: {
+            variant: {
+                default: "bg-card text-card-foreground border-border",
+                info: "border-primary/30 bg-primary/5 text-foreground [&>svg]:text-primary",
+                success:
+                    "border-success/30 bg-success/5 text-foreground [&>svg]:text-success",
+                warning:
+                    "border-warning/40 bg-warning/10 text-foreground [&>svg]:text-warning",
+                destructive:
+                    "border-destructive/30 bg-destructive/5 text-foreground [&>svg]:text-destructive",
+            },
         },
-        error: {
-            bg: "bg-red-50",
-            border: "border-red-200",
-            text: "text-red-800",
-            icon: AlertCircle,
-        },
-        warning: {
-            bg: "bg-yellow-50",
-            border: "border-yellow-200",
-            text: "text-yellow-800",
-            icon: AlertTriangle,
-        },
-        info: {
-            bg: "bg-blue-50",
-            border: "border-blue-200",
-            text: "text-blue-800",
-            icon: Info,
-        },
-    };
+        defaultVariants: { variant: "default" },
+    },
+);
 
-    const { bg, border, text, icon: IconComponent } = config[type];
+const Alert = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
+>(({ className, variant, ...props }, ref) => (
+    <div
+        ref={ref}
+        role="alert"
+        className={cn(alertVariants({ variant }), className)}
+        {...props}
+    />
+));
+Alert.displayName = "Alert";
 
-    return (
-        <div
-            className={`${bg} ${border} ${text} border rounded-lg p-4 flex items-start gap-3`}
-        >
-            <IconComponent className="w-5 h-5 mt-0.5 flex-shrink-0" />
-            <div className="flex-1">
-                {title && <h3 className="font-semibold">{title}</h3>}
-                <p className="text-sm">{message}</p>
-            </div>
-            {onClose && (
-                <button
-                    onClick={onClose}
-                    className="text-sm opacity-70 hover:opacity-100 transition-opacity"
-                >
-                    ✕
-                </button>
-            )}
-        </div>
-    );
-};
+const AlertTitle = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+    <h5
+        ref={ref}
+        className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+        {...props}
+    />
+));
+AlertTitle.displayName = "AlertTitle";
 
-export default Alert;
+const AlertDescription = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn("text-sm text-muted-foreground [&_p]:leading-relaxed", className)}
+        {...props}
+    />
+));
+AlertDescription.displayName = "AlertDescription";
+
+export { Alert, AlertTitle, AlertDescription };

@@ -1,33 +1,32 @@
-import React from "react";
+import * as React from "react";
+import { cn } from "../../lib/utils";
 
-interface ContainerProps {
-    children: React.ReactNode;
-    size?: "sm" | "md" | "lg" | "xl";
-    className?: string;
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+    size?: "sm" | "md" | "lg" | "xl" | "full";
 }
 
-/**
- * Container Component for consistent max-widths
- */
-const Container: React.FC<ContainerProps> = ({
-    children,
-    size = "lg",
-    className = "",
-}) => {
-    const sizeClasses = {
-        sm: "max-w-2xl",
-        md: "max-w-4xl",
-        lg: "max-w-6xl",
-        xl: "max-w-7xl",
-    };
-
-    return (
-        <div
-            className={`mx-auto px-4 sm:px-6 lg:px-8 ${sizeClasses[size]} ${className}`}
-        >
-            {children}
-        </div>
-    );
+const sizes = {
+    sm: "max-w-3xl",
+    md: "max-w-5xl",
+    lg: "max-w-6xl",
+    xl: "max-w-7xl",
+    full: "max-w-none",
 };
 
-export default Container;
+/** Centered, responsive-padded content container. */
+export function Container({
+    size = "lg",
+    className,
+    ...props
+}: ContainerProps) {
+    return (
+        <div
+            className={cn(
+                "mx-auto w-full px-4 sm:px-6 lg:px-8",
+                sizes[size],
+                className,
+            )}
+            {...props}
+        />
+    );
+}
